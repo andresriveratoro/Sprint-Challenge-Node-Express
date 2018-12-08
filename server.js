@@ -107,4 +107,21 @@ server.post('/api/actions', (req, res) => {
     );
 });
 
+server.delete('/api/actions/:id', (req, res) => {
+  const { id } = req.params;
+  action
+    .remove(id)
+    .then(deleted => {
+      if (deleted) res.json({ message: 'Action deleted.' });
+      else {
+        res.status(404).json({
+          message: 'The project with the specified ID does not exist.',
+        });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: 'The action could not be deleted.' })
+    );
+});
+
 server.listen(port, () => console.log(`\nAPI running on ${port}\n`));
