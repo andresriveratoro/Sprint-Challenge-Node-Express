@@ -43,4 +43,22 @@ server.post('/api/projects', (req, res) => {
     });
 });
 
+server.put('/api/projects/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, description, completed } = req.body;
+  project
+    .update(id, { name, description, completed })
+    .then(updated => {
+      if (updated) project.get(id).then(response => res.json(response));
+      else {
+        res.status(404).json({
+          message: 'The project with the specified ID does not exist.',
+        });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: 'Project could not be updated.' })
+    );
+});
+
 server.listen(port, () => console.log(`\nAPI running on ${port}\n`));
