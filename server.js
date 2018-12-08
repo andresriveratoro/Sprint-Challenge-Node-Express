@@ -12,7 +12,7 @@ server.get('/api/projects', (req, res) => {
   project
     .get()
     .then(response => {
-      if (response) res.json(response);
+      res.json(response);
     })
     .catch(err => {
       res.status(500).json({ error: 'Projects could not be retrieved.' });
@@ -24,10 +24,22 @@ server.get('/api/projects/:id', (req, res) => {
   project
     .get(id)
     .then(response => {
-      if (response) res.json(response);
+      res.json(response);
     })
     .catch(err => {
       res.status(500).json({ error: 'Project could not be retrieved.' });
+    });
+});
+
+server.post('/api/projects', (req, res) => {
+  const { name, description } = req.body;
+  project
+    .insert({ name, description })
+    .then(response => {
+      res.status(201).json(response);
+    })
+    .catch(err => {
+      res.status(500).json({ error: 'Project could not be added.' });
     });
 });
 
