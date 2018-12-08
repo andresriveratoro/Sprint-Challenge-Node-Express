@@ -142,4 +142,16 @@ server.put('/api/actions/:id', (req, res) => {
     );
 });
 
+server.get('/api/projects/actions/:project_id', (req, res) => {
+  const { project_id } = req.params;
+  project
+    .getProjectActions(project_id)
+    .then(response => res.json(response))
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: 'The actions for the project could not be retrieved.' })
+    );
+});
+
 server.listen(port, () => console.log(`\nAPI running on ${port}\n`));
