@@ -115,12 +115,30 @@ server.delete('/api/actions/:id', (req, res) => {
       if (deleted) res.json({ message: 'Action deleted.' });
       else {
         res.status(404).json({
-          message: 'The project with the specified ID does not exist.',
+          message: 'The action with the specified ID does not exist.',
         });
       }
     })
     .catch(err =>
       res.status(500).json({ error: 'The action could not be deleted.' })
+    );
+});
+
+server.put('/api/actions/:id', (req, res) => {
+  const { id } = req.params;
+  const { project_id, description, notes } = req.body;
+  action
+    .update(id, { project_id, description, notes })
+    .then(updated => {
+      if (updated) action.get(id).then(response => res.json(response));
+      else {
+        res.status(404).json({
+          message: 'The action with the specified ID does not exist.',
+        });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: 'The action could not be updated.' })
     );
 });
 
