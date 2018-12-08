@@ -97,4 +97,14 @@ server.get('/api/actions/:id', (req, res) => {
     );
 });
 
+server.post('/api/actions', (req, res) => {
+  const { project_id, description, notes } = req.body;
+  action
+    .insert({ project_id, description, notes })
+    .then(response => res.status(201).json(response))
+    .catch(err =>
+      res.status(500).json({ error: 'The action could not be added.' })
+    );
+});
+
 server.listen(port, () => console.log(`\nAPI running on ${port}\n`));
