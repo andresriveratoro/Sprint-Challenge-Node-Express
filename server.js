@@ -78,4 +78,23 @@ server.delete('/api/projects/:id', (req, res) => {
     );
 });
 
+server.get('/api/actions', (req, res) => {
+  action
+    .get()
+    .then(response => res.json(response))
+    .catch(err =>
+      res.status(500).json({ error: 'Actions could not be retrieved.' })
+    );
+});
+
+server.get('/api/actions/:id', (req, res) => {
+  const { id } = req.params;
+  action
+    .get(id)
+    .then(response => res.json(response))
+    .catch(err =>
+      res.status(500).json({ error: 'The action could not be retrieved.' })
+    );
+});
+
 server.listen(port, () => console.log(`\nAPI running on ${port}\n`));
