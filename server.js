@@ -27,7 +27,7 @@ server.get('/api/projects/:id', (req, res) => {
       res.json(response);
     })
     .catch(err => {
-      res.status(500).json({ error: 'Project could not be retrieved.' });
+      res.status(500).json({ error: 'The project could not be retrieved.' });
     });
 });
 
@@ -39,7 +39,7 @@ server.post('/api/projects', (req, res) => {
       res.status(201).json(response);
     })
     .catch(err => {
-      res.status(500).json({ error: 'Project could not be added.' });
+      res.status(500).json({ error: 'The project could not be added.' });
     });
 });
 
@@ -57,7 +57,24 @@ server.put('/api/projects/:id', (req, res) => {
       }
     })
     .catch(err =>
-      res.status(500).json({ error: 'Project could not be updated.' })
+      res.status(500).json({ error: 'The project could not be updated.' })
+    );
+});
+
+server.delete('/api/projects/:id', (req, res) => {
+  const { id } = req.params;
+  project
+    .remove(id)
+    .then(deleted => {
+      if (deleted) res.json({ message: 'Project deleted.' });
+      else {
+        res.status(404).json({
+          message: 'The project with the specified ID does not exist.',
+        });
+      }
+    })
+    .catch(err =>
+      res.status(500).json({ error: 'The project could not be deleted.' })
     );
 });
 
